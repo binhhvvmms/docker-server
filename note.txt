@@ -1,0 +1,4 @@
+konga
+	admin: onthithaytai
+	password: ndIL7LQyqgbTFnM2
+	url: http://42.112.36.61:30004

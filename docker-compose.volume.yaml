@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  nginx:
+    volumes:
+      - /var/www/web:/var/www/web
+
+  php:
+    volumes:
+      - /var/www/web:/var/www/web

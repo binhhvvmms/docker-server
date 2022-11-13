@@ -1,0 +1,127 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: prepare
+    image: busybox
+    commands:
+      - mkdir -p /cache/${DRONE_REPO}/docker
+    volumes:
+      - name: cache
+        path: /cache
+
+  - name: docker:php8.1-fpm-aline
+    image: plugins/docker
+    settings:
+      repo: webpress/php
+      dockerfile: images/php/8.1/alpine/fpm/Dockerfile
+      tags:
+        - 8.1-fpm-alpine
+      create_repository: true
+      use_cache: true
+      username:
+        from_secret: DOCKER_HUB_USER
+      password:
+        from_secret: DOCKER_HUB_PASSWORD
+    when:
+      event:
+        - promote
+      target:
+        - 8.1-fpm-alpine
+    volumes:
+      - name: docker
+        path: /var/lib/docker
+      - name: dockerHost
+        path: /var/run/docker.sock
+
+  - name: docker:php8.1-cli-aline
+    image: plugins/docker
+    settings:
+      repo: webpress/php
+      dockerfile: images/php/8.1/alpine/cli/Dockerfile
+      tags:
+        - 8.1-fpm-alpine
+      create_repository: true
+      use_cache: true
+      username:
+        from_secret: DOCKER_HUB_USER
+      password:
+        from_secret: DOCKER_HUB_PASSWORD
+    when:
+      event:
+        - promote
+      target:
+        - 8.1-cli-alpine
+    volumes:
+      - name: docker
+        path: /var/lib/docker
+      - name: dockerHost
+        path: /var/run/docker.sock
+
+  - name: docker:7.4-cli-alpine
+    image: plugins/docker
+    settings:
+      repo: webpress/php
+      dockerfile: images/php/7.4/alpine/cli/Dockerfile
+      tags:
+        - 7.4-cli-alpine
+      create_repository: true
+      use_cache: true
+      username:
+        from_secret: DOCKER_HUB_USER
+      password:
+        from_secret: DOCKER_HUB_PASSWORD
+    when:
+      event:
+        - promote
+      target:
+        - 7.4-cli-alpine
+    volumes:
+      - name: docker
+        path: /var/lib/docker
+      - name: dockerHost
+        path: /var/run/docker.sock
+
+  - name: docker:php7.4-fpm-alpine
+    image: plugins/docker
+    settings:
+      repo: webpress/php
+      dockerfile: images/php/7.4/alpine/fpm/Dockerfile
+      tags:
+        - 7.4-fpm-alpine
+      create_repository: true
+      use_cache: true
+      username:
+        from_secret: DOCKER_HUB_USER
+      password:
+        from_secret: DOCKER_HUB_PASSWORD
+    when:
+      event:
+        - promote
+      target:
+        - 7.4-fpm-alpine
+    volumes:
+      - name: docker
+        path: /var/lib/docker
+      - name: dockerHost
+        path: /var/run/docker.sock
+
+volumes:
+  - name: cache
+    host:
+      path: /var/cache
+  - name: docker
+    host:
+      path: /var/cache/${DRONE_REPO}/docker
+  - name: yarn
+    host:
+      path: /var/cache/${DRONE_REPO}/yarn
+  - name: dockerHost
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - master

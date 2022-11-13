@@ -1,0 +1,18 @@
+_format_version: '2.1'
+_transform: true
+
+services:
+  - name: acme-dummy
+    url: http://127.0.0.1:65535
+    routes:
+      - name: acme-dummy
+        protocols:
+          - http
+        paths:
+          - /.well-known/acme-challenge
+plugins:
+  - name: request-size-limiting
+    config:
+      allowed_payload_size: 64
+      size_unit: megabytes
+      require_content_length: false

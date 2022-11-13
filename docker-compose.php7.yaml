@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  php:
+    build:
+      context: images/php/7.4/alpine/fpm
+    restart: always

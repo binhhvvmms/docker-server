@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: on-failure
+    networks:
+      - webpress
+    environment:
+      - 'PMA_HOST=database'
+      - 'UPLOAD_LIMIT=${PHPMYADMIN_UPLOAD_LIMIT:-300000000}'
+#      - 'PMA_ABSOLUTE_URI=http://phpmyadmin.local.com/'
